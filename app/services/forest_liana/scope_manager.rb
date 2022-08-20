@@ -40,14 +40,13 @@ module ForestLiana
     end
 
     def self.get_collection_scope(rendering_id, collection_name)
-#       if !@@scopes_cache[rendering_id]
-#         # when scope cache is unset wait for the refresh
-#         refresh_scopes_cache(rendering_id)
-#       elsif has_cache_expired?(rendering_id)
-#         # when cache expired refresh the scopes without waiting for it
-#         Thread.new { refresh_scopes_cache(rendering_id) }
-#       end
-      Thread.new { refresh_scopes_cache(rendering_id) }
+      if !@@scopes_cache[rendering_id]
+        # when scope cache is unset wait for the refresh
+        refresh_scopes_cache(rendering_id)
+      else
+        # when cache expired refresh the scopes without waiting for it
+        Thread.new { refresh_scopes_cache(rendering_id) }
+      end
       @@scopes_cache[rendering_id][:scopes][collection_name]
     end
 
